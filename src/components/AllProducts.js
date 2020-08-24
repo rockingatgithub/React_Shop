@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function AllProducts(props) {
-  return <div>I am all</div>;
+class AllProducts extends Component {
+  render() {
+    return (
+      <div>
+        
+      </div>
+    );
+  }
 }
 
 export default AllProducts;
