@@ -6,6 +6,10 @@ import {
   ADD_PRODUCT_TO_LIST,
   SORT_PRODUCT,
   UNSORT_PRODUCT,
+  SHOW_ITEM,
+  SHOW_CART,
+  SHOW_FULL_CART,
+  HIDE_PRODUCT_INFO,
 } from '../actions';
 
 import { combineReducers } from 'redux';
@@ -14,6 +18,10 @@ const initialProductState = {
   list: [],
   cart: [],
   cartCount: 0,
+  showOne: false,
+  showOneItem: {},
+  showCart: false,
+  showAll: true,
 };
 
 export function products(state = initialProductState, action) {
@@ -87,6 +95,34 @@ export function products(state = initialProductState, action) {
       return {
         ...state,
         list: sortedArray1,
+      };
+    case SHOW_ITEM:
+      return {
+        ...state,
+        showOne: true,
+        showOneItem: action.product,
+        showCart: false,
+        showAll: false,
+      };
+    case SHOW_CART:
+      return {
+        ...state,
+        showCart: true,
+        showAll: false,
+        // cart: state.cart
+      };
+    case SHOW_FULL_CART:
+      return {
+        ...state,
+        showCart: false,
+        showAll: true,
+      };
+    case HIDE_PRODUCT_INFO:
+      return {
+        ...state,
+        showOne: false,
+        showAll: true,
+        showOneItem: {},
       };
     default:
       //   console.log('i did');

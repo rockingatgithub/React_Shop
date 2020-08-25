@@ -5,6 +5,10 @@ export const REMOVE_PRODUCT = 'REMOVE_PRODUCT';
 export const ADD_PRODUCT_TO_LIST = 'ADD_PRODUCT_TO_LIST';
 export const SORT_PRODUCT = 'SORT_PRODUCT';
 export const UNSORT_PRODUCT = 'UNSORT_PRODUCT';
+export const SHOW_ITEM = 'SHOW_ITEM';
+export const SHOW_CART = 'SHOW_CART';
+export const SHOW_FULL_CART = 'SHOW_FULL_CART';
+export const HIDE_PRODUCT_INFO = 'HIDE_PRODUCT_INFO'
 
 export function addToCart(product) {
   return {
@@ -86,4 +90,29 @@ export function unSortProductList() {
   return {
     type: UNSORT_PRODUCT,
   };
+}
+
+export function showItem(product) {
+  return {
+    type: SHOW_ITEM,
+    product,
+  };
+}
+
+export function showCartContainer() {
+  return {
+    type: SHOW_CART,
+  };
+}
+
+export function showFullContainer() {
+  return {
+    type: SHOW_FULL_CART,
+  };
+}
+
+export function hideProductInfo(){
+    return {
+        type: HIDE_PRODUCT_INFO,
+    }
 }

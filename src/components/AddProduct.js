@@ -6,6 +6,8 @@ class AddProduct extends Component {
     this.state = {
       pTitle: '',
       pPrice: '',
+      pDesc: '',
+      pImg: '',
     };
   }
 
@@ -21,21 +23,51 @@ class AddProduct extends Component {
     });
   };
 
+  productDesc = (e) => {
+    this.setState({
+      pDesc: e.target.value,
+    });
+  };
+
+  productImg = (e) => {
+    this.setState({
+      pImg: e.target.value,
+    });
+  };
+
   submitProduct = () => {
-    const { pTitle, pPrice } = this.state;
+    const { pTitle, pPrice, pDesc, pImg } = this.state;
     const product = {
       title: pTitle,
       price: pPrice,
+      desc: pDesc,
+      img: pImg,
     };
     this.props.dispatch(addProductToList(product));
   };
 
   render() {
     return (
-      <div>
-        <input onChange={this.productTitle} />
-        <input onChange={this.productPrice} />
-        <button onClick={this.submitProduct}>ADD</button>
+      <div id="add-form">
+        <p className="add-form-block">
+          <label for="item-title">Title: </label>
+          <input id="item-title" onChange={this.productTitle} />
+        </p>
+        <p className="add-form-block">
+          <label for="item-price">Price: </label>
+          <input id="item-price" onChange={this.productPrice} />
+        </p>
+        <p className="add-form-block">
+          <label for="item-desc">Description: </label>
+          <input id="item-desc" onChange={this.productDesc} />
+        </p>
+        <p className="add-form-block">
+          <label for="item-img">Image Link: </label>
+          <input id="item-img" onChange={this.productImg} value="" />
+        </p>
+        <button id="add-product" onClick={this.submitProduct}>
+          ADD
+        </button>
       </div>
     );
   }

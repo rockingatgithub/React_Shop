@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import AllProducts from './AllProducts';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import AddProduct from './AddProduct';
-import Cart from './Cart';
 import Product from './Product';
-import { allProductsList } from '../actions';
+import { allProductsList, hideProductInfo } from '../actions';
 import 'react-toastify/dist/ReactToastify.css';
 class App extends Component {
   constructor(props) {
@@ -33,48 +31,105 @@ class App extends Component {
   };
 
   showFormBox = () => {
-    toast('Add product');
     const { showForm } = this.state;
     if (showForm) {
+      toast('Add Product Form Closed!', {
+        position: 'top-right',
+        type: 'info',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       this.setState({
         showForm: false,
       });
     } else {
+      toast('Add product form and click add product button to close!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       this.setState({
         showForm: true,
       });
     }
   };
 
+  hideProduct = () => {
+    this.props.dispatch(hideProductInfo());
+  };
   render() {
     const { showForm } = this.state;
     const { products } = this.props;
-    const { list, cart } = products;
+    const { list, cart, showOne, showOneItem, showAll, showCart } = products;
     return (
       <Router>
-        <div>
+        <div id="container">
           <Navbar />
-          <button onClick={this.showFormBox}>Add Product</button>
-          {showForm && <AddProduct dispatch={this.props.dispatch} />}
+          <div id="left-box">
+            <button onClick={this.showFormBox} id="add_product">
+              Add Product
+            </button>
+            {showForm && <AddProduct dispatch={this.props.dispatch} />}
+            {showAll && (
+              <div className="main-list">
+                {list.map((product) => (
+                  <Product
+                    product={product}
+                    key={product.id}
+                    dispatch={this.props.dispatch}
+                    isInCart={this.isProductInCart(product)}
+                    showControls={true}
+                  />
+                ))}
 
-          {/* <Switch>
-            <Route exact path="/all" component={AllProducts} />
-            <Route exact path="/add" component={AddProduct} />
-            <Route exact path="/cart" component={Cart} />
-          </Switch> */}
+                {list.length === 0 ? (
+                  <div className="no-products">No products!</div>
+                ) : null}
+              </div>
+            )}
 
-          <div id="main-list">
-            {list.map((product) => (
-              <Product
-                product={product}
-                key={product.id}
-                dispatch={this.props.dispatch}
-                isInCart={this.isProductInCart(product)}
-              />
-            ))}
-            {list.length === 0 ? (
-              <div className="no-products">No products!</div>
-            ) : null}
+            {showCart && (
+              <div className="main-list">
+                {cart.map((product) => (
+                  <Product
+                    product={product}
+                    key={product.id}
+                    dispatch={this.props.dispatch}
+                    isInCart={this.isProductInCart(product)}
+                    showControls={false}
+                  />
+                ))}
+
+                {cart.length === 0 ? (
+                  <div className="no-products">No products!</div>
+                ) : null}
+              </div>
+            )}
+          </div>
+          <div id="right-box">
+            {showOne && (
+              <div className="product-desc-info">
+                <button onClick={this.hideProduct} id="close-info-button">
+                  Close
+                </button>
+                <Product
+                  product={showOneItem}
+                  key={showOneItem.id}
+                  dispatch={this.props.dispatch}
+                  isInCart={this.isProductInCart(showOneItem)}
+                />
+              </div>
+            )}
           </div>
         </div>
       </Router>
